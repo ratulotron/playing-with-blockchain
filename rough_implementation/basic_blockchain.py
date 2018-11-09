@@ -1,8 +1,10 @@
 from uuid import uuid4
 from pprint import pprint as pp
+
 class Block:
-    def __init__(self, id=uuid4(), from_user=User(), to_user=User(), value, *args, **kwargs):
-        self.id = id
+    # def __init__(self, id=uuid4(), from_user=User(), to_user=User(), value=0, *args, **kwargs):
+    def __init__(self, from_user, to_user, value, *args, **kwargs):
+        self.id = uuid4()
         self.from_user = from_user
         self.to_user = to_user
         self.value = value
@@ -17,7 +19,7 @@ class Blockchain:
 
 
 class User:
-    def __init__(self, children=[], value=0, blockchain=Blockchain() *args, **kwargs):
+    def __init__(self, children=[], value=0, blockchain=Blockchain(), *args, **kwargs):
         self.id = uuid4()
         self.children = children
         self.value = value
@@ -27,11 +29,11 @@ class User:
         updated_amount = receiver.cur_update(value)
         new_block = Block(uuid4(), self, receiver, value)
         self.emmit(new_block)
-        return "transaction to " + receiver.id + " was successful, amount: " + updated_amount
+        return "transaction to " + str(receiver.id) + " was successful, amount: " + str(updated_amount)
 
     def cur_update(self, value):
         self.value += value
-        return "new amount :" + self.value + ". added amount: " + value
+        return "new amount :" + str(self.value) + ". added amount: " + str(value)
 
     def make_connection(self, children_id):
         self.children.append(children_id)
@@ -57,6 +59,7 @@ user04 = User()
 user01.make_transaction(user02, 2)
 print(user02.value)     # should be 2
 print(user03.show_blockchain())
+
 
 """
     {
